@@ -1,0 +1,597 @@
+% LaTeX document for EPID 710 cheat sheet.
+% Copied from https://pangea.stanford.edu/computing/unix/formatting/latexexample.php
+
+% THIS IS A CHEAT SHEET FOR MATERIAL AFTER THE MIDTERM.
+
+\documentclass[landscape]{article}
+
+%\DeclareMathSizes{30}{20}{50}{20} % make math equations bigger
+
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage[english]{babel}
+\usepackage[compact]{titlesec}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{pgf,tikz} % see http://codealamode.blogspot.com/2013/06/drawing-dags-latex-solution.html
+\usetikzlibrary{matrix, shapes, arrows, positioning, chains}
+\usepackage{hyperref}
+\usepackage{xfrac}
+\usepackage{relsize}
+\usepackage{array}
+\usepackage{csquotes}
+
+%\usepackage[style=authoryear]{biblatex} % will not work for some reason.
+%\addbibresource{refs1.bib}
+
+\usepackage{xfrac}
+\usepackage{relsize}
+\usepackage{array}
+
+\usepackage{enumitem}
+\usepackage{sectsty} \sectionfont{\footnotesize \sectionrule{0pt}{0pt}{-5pt}{0.2pt} }
+\subsectionfont{\footnotesize}
+\subsubsectionfont{\footnotesize}
+
+\setdescription{leftmargin=0.1cm, labelindent=0.1cm}
+
+% Default margins are too wide all the way around. I reset them here
+% these settings are for portrait orientation
+%\setlength{\topmargin}{-1in}
+%\setlength{\textheight}{10in}
+%\setlength{\oddsidemargin}{-.5in}
+%\setlength{\textwidth}{7in}
+
+% these settings are for landscape orientation
+\setlength{\topmargin}{-1.4in}
+\setlength{\textheight}{8in}
+\setlength{\oddsidemargin}{-.8in}
+\setlength{\textwidth}{10.75in}
+
+\newcommand{\squeezeupe}{\vspace{-8mm}}
+\newcommand{\squeezeup}{\vspace{-5mm}}
+\newcommand{\squeezeupf}{\vspace{-4mm}}
+\newcommand{\squeezeupp}{\vspace{-2mm}}
+\newcommand{\squeezeuppp}{\vspace{-1mm}}
+\newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}} % see http://tex.stackexchange.com/questions/31416/how-to-make-math-font-huge
+
+\titleformat{\section}
+  {\boldfont\scshape}{\thesection}{1em}{\MakeUppercase} % Got this from http://tex.stackexchange.com/questions/36609/formatting-section-titles
+
+\titleformat{\subsection}
+  {\normalfont\scshape}{\thesubsection}{2em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\scshape}{\thesubsubsection}{2em}{}
+
+\titleformat{\table}
+  {\normalfont\scshape}{\thetable}{2em}{} % Got this from http://tex.stackexchange.com/questions/36609/formatting-section-titles
+
+%\let\oldtabular\tabular
+%\renewcommand{\tabular}{\footnotesize\oldtabular} % see http://en.wikibooks.org/wiki/LaTeX/Tables
+
+\usepackage[font=footnotesize,labelfont=rm]{caption} % see http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions#Caption_Styles
+
+
+\begin{document}
+
+%\title{EPID 710}
+%\author{Ann Von Holle\\
+%}
+%\renewcommand{\today}
+
+%\maketitle{}
+
+%\tiny{}
+\footnotesize{} % make entire document text footnotesize font -- other option is tiny but hard to read.
+\begin{multicols}{3} % make terms in  columns of document.
+
+\section{Standardization. ME1. Chapter 5.\textorpdfstring{\cite{rothman_modern_1986}}}
+\squeezeupp{}
+\begin{tiny} The principle behind standardization is to calculate hypothetical crude rates for each compared group using an identical artificial distribution for the factor to be standardized; the artificial distribution is known as the \textit{standard}.
+\end{tiny}
+
+	\begin{description}[noitemsep,nolistsep]
+
+			\item[Standardized rate (SR)]
+			= $\frac{\displaystyle \sum{w_{i}R_{i}}}{\displaystyle \sum{w_{i}}}$
+
+			$R_{i}$ is the category-specific rate in category $i$
+			$w_{i}$ is the weight for category $i$, from the standard.
+
+			Note: weighting the sample by the sample distribution = crude rate.
+			\squeezeupp{}
+			\[ 
+				SR = \frac{\displaystyle \sum{n_{i}\cdotp\frac{\displaystyle y_{i}}{\displaystyle n_{i}}}}{\displaystyle \sum{n_{i}}} = \frac{y_{i}}{n_{i}} = \textrm{crude rate}
+			\]
+
+			\item[Indirect]
+			\squeezeup{}
+			\squeezeup{}
+				\[
+				SMR = \frac{\sum{y_{1i}}}{\displaystyle \sum{n_{1i}\cdotp \frac{y_{0i}}{n_{0i}}}} = 
+							\frac{\textrm{observed}}{\textrm{expected}} = 
+							\frac	{
+										\frac{\displaystyle \sum{y_{1i}}}
+													{\sum{n_{1i}}} }
+										 {
+										\frac{{\displaystyle \sum{n_{1i}\cdotp \frac{y_{0i}}{n_{0i}}}}}
+													{\displaystyle \sum{n_{1i}}}
+										}
+				\]
+
+			$R_{1i}$ is the exposed rate in category $i$ = $\frac{y_{1i}}{n_{1i}}$.
+			$R_{0i}$ is the unexposed rate in category $i$ = $\frac{y_{0i}}{n_{0i}}$.
+
+
+			SMR = ratio of two standardized rates that have been standardized (weighted) to the exposed distribution.
+		\end{description}
+
+\squeezeupf{}
+\section[Lecture 19 and 20]{Lecture 19 and 20. Effect measure modification (EMM)}
+
+	\squeezeupp{}
+	\begin{description}[noitemsep,nolistsep]
+		\item[Effect modification] The average causal effect of A on Y varies across levels of M. \cite{hernan_ma_causal_2013}
+		\item[Effect-\textbf{measure} modification] Measure of effect changes over values of some other variable. \cite{rothman_epidemiology_2012}
+		\item[Interaction]
+			\begin{description}[noitemsep,nolistsep]
+				\item[]
+				\item[Biological] joint operation of two or more causes to produce or prevent disease
+				\item[Statistical] observed heterogeneity of effect measures
+			\end{description}
+	\end{description}
+	
+	\squeezeupf{}
+	\subsection{Assessing modification}
+	
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Stratum-specific measures of effect] Association between exposure and outcome similar within subgroups formed by another factor?
+			\item[Interaction tables] designed to assess modification
+		\end{description}
+		
+			\squeezeupf{}
+			\subsubsection{Joint effects: In terms of interaction}
+			
+				\squeezeupp{}
+				\begin{description}[noitemsep,nolistsep]
+					\item[Additive] $IPD_{A+,B+} <> IPD_{A+,B-} + IPD_{A-,B+}$
+					\item[Multiplicative] $IPR_{A+,B+} <> IPR_{A+,B-} \times IPR_{A-,B+}$
+				\end{description}
+				
+			\squeezeupf{}	
+			\subsubsection{Types of joint effect}
+				%\begin{tiny}
+				\begin{tabular}{r|r|r}
+					Antagonistic & Not present & Synergy \\ \hline
+					observed $\textless$ expected & observed = expected & observed \textgreater expected 
+				\end{tabular}
+				%\end{tiny}
+				
+			\squeezeupp{}
+			\subsubsection[Five types of joint effect]{Five types of joint effect}
+					\begin{center}
+					\begin{tabular}{c|c|c|c|c|c}
+						 & 1 & 2 (pt) & 3 & 4 (pt) & 5 \\ \hline
+						Additive & sub & & super & & super \\ \hline
+						Multiplic. & sub & & sub & & super \\ \hline
+						Perfect & -- & A & -- & M & -- \\ \hline
+						& Sub-A & Sub-M & Inter. & Super-A & Super-M \\ \hline
+					\end{tabular}
+					\end{center}
+			
+			\squeezeupp{}
+			\subsubsection[Antagonistic or Synergistic]{Antagonistic (ant) or Synergistic (syn)}
+					\begin{center}
+					\begin{tabular}{c|c|c|c|c|c}
+						Region & 1 & 2 (pt) & 3 & 4 (pt) & 5 \\ \hline
+						Additive & ant & & syn & & syn \\ \hline
+						Multiplic. & ant & & ant & & syn \\ \hline
+						Perfect & -- & A & -- & M & -- \\ \hline
+						& Sub-A & Sub-M & Inter. & Super-A & Super-M \\ \hline
+					\end{tabular}
+					\end{center}
+				
+			\subsubsection{Joint effect summary}
+				\begin{description}[noitemsep,nolistsep]
+					\item[Departure from additivity] Additive antagonistic, perfectly additive, additive synergistic
+					\item[Departure from perfect multiplicativity] Multiplicative antagonistic, Multiplicative synergistic	
+				\end{description}
+			%	\end{table}%
+			
+	\squeezeupp{}
+	\subsection{Modification and Confounding}
+	
+		\begin{description}[noitemsep,nolistsep]
+			\item[Modification] Crude estimate is weighted average of the stratum-specific
+				\begin{description}[noitemsep,nolistsep]
+					\item[Modification $\ne$ Bias] Crude measure has a meaningful interpretations the overall association across subgroups (if no confounding)
+				\end{description}
+				
+			\item[Confounding] Stratum-specific effect estimates are similar to each other, but differ from crude.
+				\begin{description}[noitemsep,nolistsep]
+					\item[Confounding = Bias] Crude measure does not have a meaningful interpretation.
+				\end{description}
+		\end{description}
+				
+	\squeezeup{}
+	\subsection{Key formulae}
+			\squeezeupp{}
+			\begin{center}
+			\begin{tabular}{l|l}
+				& Assumption \\ 
+				\textbf{Expected} & \textbf{Additive} \\ \hline
+				IRD$_{A+,B+}$ = & IRD$_{A+,B-}$ + IRD$_{A-,B+}$ \\ \hline
+				IRR$_{A+,B+}$ = & IRR$_{A+,B-}$ + IRR$_{A-,B+}$ - 1 \\ \hline
+				\textbf{Expected} & \textbf{Multiplicative} \\ \hline
+				IRR$_{A+,B+}$ = & IRR$_{A+,B-}$ $\times$ IRR$_{A-,B+}$  \\ \hline
+			\end{tabular}
+			\end{center}
+				
+\section[Lecture 22]{Lecture 22. Selection bias}
+
+	\begin{multicols}{2}
+	
+		\squeezeupp{}
+			\begin{tabular}{p{1cm}|p{1cm}|p{1cm}}
+				 & \textbf{Disease} &  \\ \hline
+				\textbf{Exposure} &	yes	& no \\ \hline
+				yes	& pa & pb	 \\ \hline
+				no & pc & pd \\ \hline
+			\end{tabular}
+	
+%	\subsection{OR$_{obs}$ and RR${_obs}$}
+	
+		\squeezeupp{}
+			\begin{tabular}{l|l}
+				\textbf{OR}$_{obs}$ & \textbf{RR}$_{obs}$ \\ \hline
+				$\displaystyle\frac{paApdD}{pbBpcC}$ & $\displaystyle \frac 	{\displaystyle\sfrac{paA}{(paA+pbB)}}
+																								{\displaystyle\sfrac{pcC}{(pcC+pdD})}$ \\ \hline
+			\end{tabular}
+
+	\end{multicols}
+
+			\textbf{OR unbiased when}
+			\begin{tabular}{l|l}
+				Selection differs & \\ \hline
+				by exposure only & pa=pb and pc=pd \\ \hline
+				 by disease only & pa=pc and pb=pd \\ \hline
+			\end{tabular} 
+			
+	\squeezeupp{}
+	\subsection{Types of selection bias}
+		
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Refusal bias] Non-responders or those declining study participation differ from respondents with respect to exposure
+			\item[Assessment bias] Differential attention given to exposure ascertainment in cases (or outcome ascertainment in exposed)
+			\item[Healthy worker bias] Occupational exposure; general population for comparison. People who can work are healthier than the general population.
+			\item[Berkson's bias] Hospital-based case control studies. Exposure increases the risk of hospitalization. More so among the cases than the noncases. The combination of exposure and disease increases the probability of hospitalization.
+		\end{description}
+		
+\squeezeupp{}
+	\subsection{Avoid selection bias}
+		\squeezeupp{}
+			1. High participation and response rates, 2. Complete and objective ascertainment, 3. Complete follow-up.
+
+\squeezeupp{}		
+\section{Lecture 22 and 23. Information bias}
+
+	\squeezeuppp{}
+	\subsection{Sources of error} 
+		\begin{description}[noitemsep,nolistsep]
+			\item[Random] Affects precision. Quantified with confidence interval.
+			\item[Systematic] Affects validity. Explored with sensitivity analysis.
+		\end{description}
+
+	\squeezeupp{}
+	\subsection{Sources of bias}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Confounding] Estimates of effect distorted by another factor
+			\item[Information] Mismeasurement of exposure, outcome, or covariates
+			\item[Participant selection] Study participation criteria, recruitment, and retention
+		\end{description}
+
+	\squeezeupp{}
+	\subsection{Information bias terminology}
+	
+		\squeezeupp{}
+		\textbf{Non-differential misclassification} Under-ascertainment of outcome; Same in exposed \& unexposed.
+				\begin{tiny}
+				\begin{tabular}{p{2.5cm}|p{2.5cm}|p{2.5cm}}
+						1. \% of cases misclassified is the same for both exposed and unexposed &
+						2. No bias for risk ratio (IPR) &
+						3. No bias for the rate ratio (IRR) \\ \hline
+						4. But erodes precision (wider confidence intervals) &
+						5. Assumes: prospective cohort design; no false positives (one-way misclassification) and rare outcome & \\ \hline
+				\end{tabular}%
+				\end{tiny}
+
+			\textbf{Differential misclassification:} Under-ascertainment of outcome differs between exposed \& unexposed.
+				\begin{tiny}
+				\begin{tabular}{p{3.5cm}|p{4.5cm}}
+					1. \% of cases misclassified is different for exposed and unexposed &
+					2. Bias for risk ratio (IPR) \\ \hline
+					3. Bias for the rate ratio (IRR) &
+					4. Direction of bias cannot be predicted without knowledge of mis-classification probabilities \\ \hline
+				\end{tabular}%
+				\end{tiny}
+
+		\begin{description}[noitemsep,nolistsep]
+			\item[Other]
+				\begin{enumerate}[noitemsep,nolistsep]
+					\item{Misclassification of the exposure can occur}
+					\item{Misclassification of exposure and the outcome can be happening at the same time}
+					\item{Misclassification of a confounding variable can also occur}
+				\end{enumerate}
+					\item[Applied to case-control studies] When \% of exposure misclassification is the same for cases and controls. Always biases the odds ratio (OR) towards the null. Assume binary exposure and misclassification probability <50\%.
+		\end{description}
+				
+	\squeezeup{}
+	\subsection{Quantifying misclassification}
+	
+			\squeezeupp{}
+			% Table generated by Excel2LaTeX from sheet 'Sheet1'
+			\begin{center}
+				\begin{tabular}{r|r|r|r}
+							& \textbf{Truth} & \textbf{} &  \\
+				\textbf{Report} & \textbf{D+} & \textbf{D-} &  \\ \hline
+				\textbf{R+} & a (TP) & b (FP) & a+b \\ \hline
+				\textbf{R-} & c (FN) & d (TN) & c+d \\ \hline
+							& a+c   & b+d   &  \\
+				\end{tabular}%
+			\end{center}
+	
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Sensitivity (Se)] a/(a+c) = Pr(R+ $\mid$ D+)
+			\item[Positive predictive value (PPV)] a/(a+b) = Pr(D+ $\mid$ R+)
+			\item[Specificity (Sp)] d/(b+d) = Pr(R- $\mid$ D-)
+			\item[Negative predictive value (NPV)] d/(c+d) = Pr(D- $\mid$ R-)
+			\item[Prevalence of factor (exposure or outcome)] \textbf{Does not} affect Se or Sp. \textbf{Does} affect PPV and NPV.
+		\end{description}
+		
+	\squeezeup{}
+	\subsection{Sources of information bias, etc.}
+		
+		\squeezeupp{}
+		\begin{enumerate}[noitemsep,nolistsep]
+			\item {Cultural differences, Poorly worded questions, Faulty recall, Observer bias, Variation between observers, Errors in lab assays}
+			\item {Hallmarks of good studies (quantify bias a priority, use sensitivity analysis). Hallmark of bad study (ignore bias. say 'could bias null' in discussion)}
+		\end{enumerate}
+
+\squeezeup{}
+\section{Lecture 23. Estimation and testing}
+	\squeezeupp{}
+	\textbf{Estimation of effects:} \textbf{Strength} of association between exposure and disease. \textbf{Precision} of estimate.
+	
+	\squeezeup{}
+	\subsection{95\% CI for effect measure (em)}
+
+	\squeezeupp{}
+	\begin{description}[noitemsep,nolistsep]
+		\item[General form of 95\% CI] EM $\pm$ 1.96 $\times$ se(EM)
+		\item[ln scale for IPR, IRR, OR]
+		\item[95\% lower limit] $(LL_{IPR}) = exp(ln(IPR)-1.96\times se[ln(IPR)])$
+		\item[95\% upper limit] $(UL_{IPR}) = exp(ln(IPR)+1.96\times se[ln(IPR)])$
+		\item[Interpretation] If we conducted this study and calculated the risk ratio and 95\% confidence interval under the same conditions 100 times, we would expect 95 out of the 100 confidence intervals to contain the \underline{population}(unobservable) risk ratio.
+		\item[Incorrect] The true risk ratio has a 95\% chance of lying in a given confidence interval.
+	\end{description}
+		
+		\squeezeupp{}
+		\subsubsection{Risk}
+		
+		\squeezeup{}
+		\begin{center}
+			\begin{tabular}{rr|r|r}
+			\textbf{} & \textbf{Exposed} & \textbf{Unexposed} & \textbf{} \\
+			\textbf{Disease} & a     & b     & M$_{1}$ \\ \hline
+			\textbf{No disease} & c     & d     & M${_0}$ \\ \hline
+			\textbf{} & N${_1}$    & N${_0}$    & T \\
+			\end{tabular}%
+		\end{center}
+
+	\begin{description}[noitemsep,nolistsep]
+		\item[Odds ratio (OR)] =  $\displaystyle\sfrac{(a \times d)}{(b \times c)}$
+			\[
+				SE[ln(OR)] = \sqrt{(\sfrac{1}{a} + \sfrac{1}{b} + \sfrac{1}{c} + \sfrac{1}{d})}
+			\]
+		\item[Risk ratio (IPR)] = $\displaystyle\ \frac {\displaystyle \sfrac{a}{N_{1}}}
+																										{\displaystyle \sfrac{b}{N_{0}}}$
+			\[
+				SE[ln(IPR)] = \sqrt{(\sfrac{1}{a} - \sfrac{1}{N_{1}} + \sfrac{1}{b} - \sfrac{1}{N_{0}})}
+			\]
+		\item[risk difference (IPD)] = $\displaystyle \sfrac{a}{N_{1}} - \displaystyle \sfrac{b}{N_{0}}$
+			\[
+				SE(IPD) = \sqrt{\displaystyle \frac{a(N_{1}-a)}{N_{1}^{3}} + \displaystyle \frac{b(N_{0}-b)}{N_{0}^{3}}}
+			\]
+	\end{description}
+		
+		\squeezeup{}
+		\subsubsection{Incidence}
+		
+		\begin{center}
+			\begin{tabular}{r|r|r}
+						& \textbf{Exposed} & \textbf{Unexposed} \\
+			\textbf{Cases} & a     & b \\ \hline
+			\textbf{Person-time} & PT$_{1}$   & PT${_0}$ \\
+			\end{tabular}%
+		\end{center}
+
+	\begin{description}[noitemsep,nolistsep]
+		\item[Incidence rate ratio (IRR)] = $\displaystyle\frac{\sfrac{a}{PT_{1}}} {\sfrac{b}{PT_{0}}} $
+			\[
+				SE[ln(IRR)] = \sqrt{(\sfrac{1}{a} + \sfrac{1}{b}}
+			\]
+		\item[Incidence rate difference (IRD)] = $\displaystyle \sfrac{a}{PT_{1}} - \displaystyle \sfrac{b}{PT_{0}}$
+			\[
+				SE[(IRD)] = \sqrt{(\sfrac{a}{(PT_{1})^{2}} + \sfrac{b}{(PT_{0})^{2}}}
+			\]
+	\end{description}
+
+	\subsubsection{Comparing confidence intervals}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Confidence Limit Difference (CLD)] $|UL_{IPD} - LL_{IPD}|$
+			\item[Confidence Limit Ratio (CLR)]	
+				\[ \displaystyle\frac{UL_{IPR}}{LL_{IPR}} = |ln(UL_{IPR}) - ln(LL_{IPR})|
+				\]
+		\end{description}
+		
+	\squeezeupp{}
+	\subsubsection{Key messages}
+	
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Strength of association] point estimates (IPD, IPR, IRD, IRR, or OR)
+			\item[Precision] confidence intervals for IPD, IPR, IRD, IRR, or OR. Ratio measures (OR, IPR, IRR) calculate confidence interval for the natural log of the ratio.
+			\item[Interpretation] Involves concept of hypothetical replications. computed using formulae derived from sampling distributions.
+		\end{description}
+		
+\subsection{Hypothesis tests and p-values}
+	\subsubsection{Hypothesis testing}
+		\begin{description}[noitemsep,nolistsep]
+			\item[p-value] value is the probability of observing another test statistic at least as far from the null as the one we observed assuming the null is true.
+			\item[reject the null hypothesis] if the p-value is below a threshold (5\%)
+			\item[fail to reject the null hypothesis] if the p-value is above a threshold (5\%)
+		\end{description}
+
+	\squeezeupp{}
+	\subsubsection{Key messages}
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Preference is given]to estimation of effects (i.e. the OR, IRR, or IPR) and their precision (CI and CLR).
+		\end{description}
+	
+\squeezeup{}
+\section[Lecture 24.]{Lecture 24. Statistical power}
+
+	\squeezeupp{}
+	Power important to design studies and some cases of failure to reject because of low sample size -- not a case of 'no difference'.
+	
+	\squeezeup{}
+		\begin{center}
+    \begin{tabular}{p{1.8cm}|p{3cm}|p{3cm}}
+						& \textbf{Truth} & \textbf{} \\ 
+						& (unobservable) & \\
+						\textbf{Observed}    & \textbf{Assn in pop} & \textbf{No assn in pop} \\  \hline
+						\textbf{Reject null} & Correct (true +ve) & Type I error (false +ve) \\ \hline
+						\textbf{Fail reject} & Type II error (false -ve) & Correct (true -ve) \\ 
+    \end{tabular}%
+		\end{center}
+		
+		\begin{description}[noitemsep,nolistsep]
+			\item[Type I error (alpha)] Assume $H_{0}$ is true. Due to chance your sample is skewed toward disease risk is higher in exposed vs unexposed. Claim an association when none exists.
+			\item[Type II error (beta)] Assume $H_{0}$ is \underline{not} true. Due to chance your sample is skewed in direction of same risk. Claim no association but there is one.
+		\end{description}
+
+	\squeezeupp{}
+	\subsection{Sample size formulas}
+
+		\begin{description}[noitemsep,nolistsep]
+			\item[Sample size estimation] Meet statistical needs of study to adequately \textbf{power} a hypothesis \textbf{test} and \textbf{precision} to \textbf{estimate} an association.
+				\begin{description}[noitemsep,nolistsep]
+					\item[Depends] on 1. research design, 2. alpha, 3. power, 4. effect size, 5. variability of outcome
+				\end{description}
+			\item[Continuous outcome: diff in means] 
+				\[n = \displaystyle \frac	{ \displaystyle (Z_{\sfrac{\alpha}{2}} + Z_{\beta})^{2}\cdot(2\sigma^{2})}																													{ \displaystyle (\mu_{1} - \mu_{2})^{2}}
+				\]
+			\item[Binary outcome: diff of proportions] 
+				\[
+					n = \displaystyle \frac	{ \displaystyle (Z_{\sfrac{\alpha}{2}} + Z_{\beta})^{2}\cdot[P_{1}(1-P_{1}) + P_{2}(1-P_{2})]}
+																	{ \displaystyle (P_{1} - P_{2})^{2}}
+				\]
+			\item[Continuous outcome: est of mean] $n = \displaystyle \frac	{Z_{\sfrac{\alpha}{2}}^{2}s^{2}}{d^{2}}$
+					Note: d = The desired precision level expressed as half of the maximum acceptable  confidence interval width. Also, $Z_{\sfrac{\alpha}{2}}$=1.96 for $\alpha$=0.05 and  $Z_{\beta})^{2}$=1.28 for 1-$\beta$=0.8.
+
+			\item[Binary outcome: est of proportion] $n = \displaystyle \frac	{Z_{\sfrac{\alpha}{2}}^{2}p(1-p)}{d^{2}}$
+		\end{description}
+
+		\squeezeup{}
+		\includegraphics[width=6cm, height=4cm]{power}
+
+\squeezeup{}\squeezeup{}\squeezeupp{}
+\section{Lecture 25 and 26. Screening}
+
+		\squeezeupp{}
+		\subsubsection{Screening}
+			\squeezeupp{}
+			Examination of asymptomatic people in order to classify them as likely or unlikely to have the disease that is the object of screening.
+		
+			\begin{description}[noitemsep,nolistsep]
+				\item[Primary]Avoid biological onset of disease
+				\item[Secondary] Minimize adverse outcomes through early detection and treatment of disease.
+				\item[Tertiary] Reduce complications of advanced disease
+				\item[Asymptomatic] People who have no clinical symptoms. (screening can benefit them with referral to diagnostic test.
+				\item[False Positive] Screen positive, negative in truth
+				\item[False Negative] Screen negative, positive in truth.
+			\end{description}
+
+		\squeezeupp{}
+		\subsubsection{Diagnostic test}
+		\squeezeupp{}
+			One or more diagnostic tests are used to establish that a person has or does not have the disease. Targets: people who \underline{screen positive}, or are \underline{symptomatic}.
+
+	\squeezeupp{}
+	\subsection{Natural history of the disease}
+	\squeezeupp{}
+		\includegraphics[width=8cm, height=2.5cm]{timeline} % derived from screening_timeline.R
+			
+	\squeezeup{}
+	\subsection{Lead time}
+		\includegraphics[width=8cm, height=2.5cm]{leadtime} % derived from screening_timeline.R
+	
+	\squeezeup{}\squeezeupp{}
+	\subsection{Requirements for effective screening}
+
+		\squeezeupp{}
+		\begin{enumerate}[noitemsep,nolistsep]
+			\item{Suitable disease} Suficient population burden and suitable 'window of opportunity'.
+			\item{Accurate test} Reliable and Valid (sensitive and specific)
+			\item{Effective treatment} must be a treatment that favorably alters disease progression.
+			\item{Benefits outweigh the harms}
+			\item{Reasonable cost}
+		\end{enumerate}
+	
+	\squeezeupp{}
+	\subsection{Sensitivity and Specificity}
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Trade-off] Good cutpoint critical. With continuous measure need cutpoint. Maximize sensitivity and specificity of screen. $\uparrow$ Se $\Rightarrow$ $\downarrow$ Sp and $\uparrow$ Sp $\Rightarrow$ $\downarrow$ Se
+			\item[High Se, Low Sp] \textbf{Good} when: Dx test cheap, disease trt effective, little cost to false pos. \textbf{Bad} when: Dx test invasive\textbackslash costly. Major emotional cost to screening +ve. Example: screen for HIV in donated blood.
+			\item[Low Se, High Sp] \textbf{Good} when: high emotional cost to screen +ve. Diagnostic tests are expensive\textbackslash invasive. \textbf{Bad} when: trying to prevent transmission of disease. When trt is available and early detection will decrease mortality (missed opportunity). example: fatal disease with no treatment.
+			\item[ROC curve] Plot true positive rate (Se) vs false positive rate (1-Sp). 0.9 to 1.0 (Excellent), 0.8-0.9 (Good), 0.7-0.8 (Fair), 0.6-0.7(Poor), 0.5-0.6 (Fail)
+		\end{description}
+		
+	\squeezeupp{}
+	\subsection{Biases in screening}
+	
+		\squeezeupp{}
+		\begin{description}[noitemsep,nolistsep]
+			\item[Lead time bias] Diagnosis made earlier in screened group. Length of time from diagnosis to survival will look artifactually better in screened cases.
+			\item[Length time bias] Selection bias in which longer intervals are more likely to be chosen. Example: cancer and tumor growth. Higher proportion of tumors found in screened group and survival improvement an artifact of data.
+		\end{description}
+
+	\squeezeupp{}
+	\subsection{Evaluation}
+			\squeezeupp{}
+			Endpoint=Mortality, Endpoint $\neq$ Survival time.
+
+			\begin{description}[noitemsep,nolistsep]
+			\item[RCT] gold standard. controls for lead-time bias, length-time bias and over-diagnosis bias. requires large \# of participants, long follow-up time. EXPENSIVE and TIME-CONSUMING. cohort studies have similar problems.
+			\item[case-control] When outcome is rare, screening tech. changes rapidly, speed required, disease detectable but preclinical.
+				\begin{description}[noitemsep,nolistsep]
+					\item[Case] person who died or developed relevant \underline{adverse} outcome. Select regardless of stage of disease when first diagnosed.
+					\item[Control] Representative of the population that generated the cases with respect to the presence and/or level of screening activity. Don't exclude those with preclinical disease.
+			\end{description}
+		\end{description}
+		
+% see http://codealamode.blogspot.com/2013/06/drawing-dags-latex-solution.html
+\end{multicols}
+
+
+\bibliographystyle{alpha}
+\bibliography{refs1}
+
+\end{document}
+
