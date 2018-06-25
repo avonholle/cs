@@ -54,7 +54,7 @@ timeline + geom_text(data=df4, aes(x = X1, y=X3, label = X2)) +
 
 
 setEPS()
-postscript("P:/Ann/grad_school/classes/epid.710/cheatsheet/part2/leadtime.eps",width=8, height=2.5)
+postscript("leadtime.eps",width=8, height=2.5)
 
 # see http://stackoverflow.com/questions/6528180/ggplot2-plot-without-axes-legends-etc
 timeline + geom_text(data=df4, aes(x = X1, y=X3, label = X2)) +
